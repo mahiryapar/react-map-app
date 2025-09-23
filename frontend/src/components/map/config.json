@@ -1,0 +1,9 @@
+{
+    "defaultLon": 32.750733,
+    "defaultLat": 39.983707,
+    "GeoServer":{
+        "url":"http://localhost:8080/geoserver",
+        "workspace":"ne",
+        "layerName":"Polygons"
+    }
+}
