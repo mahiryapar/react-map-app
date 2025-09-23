@@ -288,8 +288,6 @@ Geri bildirimler ve katkılar memnuniyetle karşılanır. İsterseniz yeni özel
 
 </div>
 
-**İletişim:**
-- E‑posta: [mahiryapar2453@gmail.com](mailto:mahiryapar2453@gmail.com)
 
 
 
