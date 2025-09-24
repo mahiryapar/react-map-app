@@ -47,6 +47,15 @@ namespace backend.Services
             return true;
         }
 
+        public async Task<JsonObject> GetPagedPolygonData()
+        {
+            var data = new { };
+
+
+
+
+            return data;
+        }
 
         public async Task<PolygonDto> UpdateAsync(PolygonModel model)
         {
@@ -69,7 +78,6 @@ namespace backend.Services
             return list.Select(EntitytoDto);
         }
 
-
         private PolygonDto EntitytoDto(PolygonEntity entity)
         {
             var props = new JsonObject
@@ -84,11 +92,10 @@ namespace backend.Services
             {
                 Id = entity.Id,
                 Properties = props,
-                Geometry = entity.Geometry != null ? ToGeoJson(entity.Geometry) : null
+                Geometry = entity.Geometry != null ? ToGeoJson(entity.Geometry) : null!
             };
         }
    
-        
         private static JsonArray CoordinatesToJsonArray(Coordinate[] coords)
         {
             var array = new JsonArray();
@@ -149,8 +156,6 @@ namespace backend.Services
 
             return GeometryFactory4326.CreateLinearRing(coords.ToArray());
         }
-
-
 
         private static Polygon? ParseGeoJsonPolygon(JsonObject geom)
         {

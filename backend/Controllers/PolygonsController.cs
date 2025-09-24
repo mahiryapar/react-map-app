@@ -1,6 +1,7 @@
 ﻿using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using backend.Interfaces;
+using System.Linq;
 
 namespace backend.Controllers
 {
@@ -70,6 +71,7 @@ namespace backend.Controllers
             }
         }
 
+        // GET /polygons
         [HttpGet]
         public async Task<IActionResult> GetPolygons()
         {
@@ -83,6 +85,26 @@ namespace backend.Controllers
             catch(Exception ex)
             {
                 return BadRequest(new { message = "Polygonlar çekilirken bir hata oluştu", error = ex.Message });
+            }
+        }
+
+        // GET /polygons/paged?page=1&size=10
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPolygonsPaged([FromQuery] int page = 1, [FromQuery] int size = 10)
+        {
+            try
+            {
+                if (page < 0 || size < 1)
+                    return BadRequest("Geçersiz sayfa veya sayfa boyutu.");
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                var data = await _polygonService.GetPagedPolygonData();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Polygonlar sayfalanırken bir hata oluştu", error = ex.Message });
             }
         }
     }
