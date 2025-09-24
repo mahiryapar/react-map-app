@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { DEFAULT_LON, DEFAULT_LAT } from './components/map/MapView';
-import SidebarForm from './components/SidebarForm';
+import RightSideBar from './components/RightSideBar/RightSideBar.js';
 import { savePolygon/*, fetchPolygons */,updatePolygon, deletePolygon} from './services/api';
-import LeftSideBar from './components/LeftSideBar.js';
+import LeftSideBar from './components/LeftSideBar/LeftSideBar.js';
+import QueryTableScreen from './components/query-table-screen/QueryTableScreen.jsx'; 
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [loadError, setLoadError] = useState(null);
   const [identifyMode, setIdentifyMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [queryScreenOpen, setQueryScreenOpen] = useState(false);
   const mapApiRef = React.useRef(null);
 
 
@@ -71,11 +73,18 @@ function App() {
   return (
     <div>
       <div id="inputs-group">
-        <button id="identify-button" onClick={() => {
+        <div id="left-buttons">
+          <button id="identify-button" onClick={() => {
           setIdentifyMode(!identifyMode);
         }}>
           {identifyMode ? 'Çizim Modu' : 'Kimlik Modu'}
         </button>
+        <button id="query-screen-button" onClick={() => {
+          setQueryScreenOpen(!queryScreenOpen);
+        }}>
+          Sorgu Paneli
+        </button>
+        </div>
         <div id="input-group" style={{ marginBottom: '8px' }}>
           <label htmlFor='lon-input' style={{ fontWeight: 600 }}>Longitude</label><br />
           <input
@@ -99,6 +108,10 @@ function App() {
           />
         </div>
       </div>
+      <QueryTableScreen 
+        onClose={() => setQueryScreenOpen(false)}
+        isOpen={queryScreenOpen}
+      />
       <LeftSideBar isOpen={leftSidebarOpen}
         geometry={geometry}
         feature={selectedFeature}
@@ -114,7 +127,7 @@ function App() {
          editMode={editMode}
          setEditMode={setEditMode}
       />
-      <SidebarForm
+      <RightSideBar
         geometry={geometry}
         isOpen={sidebarOpen}
         onSubmit={handleSubmit}

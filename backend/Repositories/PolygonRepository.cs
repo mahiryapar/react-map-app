@@ -1,7 +1,7 @@
-﻿using backend.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using backend.Interfaces;
 using backend.Data;
+using basarsoft_react_web_api.Entities;
 
 
 namespace backend.Repositories

@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import './style/RightSideBar.css';  
 
 
 export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onCancel }) {
     const [tur, setTur] = useState('');
-    const [kimlikId, setKimlikId] = useState('');
     const [ad, setAd] = useState('');
     const [numarataj, setNumarataj] = useState('');
     const [aciklama, setAciklama] = useState('');
@@ -32,7 +32,6 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                 geometry,
                 properties: {
                     tur,
-                    kimlikId: kimlikId || null,
                     ad,
                     numarataj: numarataj || null,
                     aciklama: aciklama || null,
@@ -41,7 +40,6 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
             await onSubmit?.(payload);
             setMessage('Başarıyla kaydedildi.');
             setTur('');
-            setKimlikId('');
             setAd('');
             setNumarataj('');
             setAciklama('');
@@ -82,12 +80,6 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                         <option value="diger">Diğer</option>
                     </select>
                 </label>
-
-                <label>
-                    Kimlik / ID
-                    <input type="text" value={kimlikId} onChange={(e) => setKimlikId(e.target.value)} placeholder="Örn: 12345" />
-                </label>
-
                 <label>
                     Ad
                     <input type="text" value={ad} onChange={(e) => setAd(e.target.value)} placeholder="Alan adı" required />

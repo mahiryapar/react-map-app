@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import './style/LeftSideBar.css';
 
 function controlInputs(mode = false) {
     const inputs = document.querySelectorAll('#polygon-form input, #polygon-form select, #polygon-form textarea');
@@ -13,7 +14,6 @@ async function onayla(onAfterSubmit,onSubmit, feature, geometry, tur, kimlikId, 
             geometry: geometry,
             properties: {
                 tur,
-                kimlikId,
                 ad,
                 numarataj,
                 aciklama
@@ -60,22 +60,13 @@ export default function LeftSideBar({
 
     useEffect(() => {
         if (feature) {
-            if (feature.properties && feature.properties.Properties) {
-                try {
-                    const p = JSON.parse(feature.properties.Properties);
-                    setTur(p.tur || '');
-                    setKimlikId(p.kimlikId || feature.id || '');
-                    setAd(p.ad || '');
-                    setNumarataj(p.numarataj || '');
-                    setAciklama(p.aciklama || '');
-                } catch (e) {
-                    console.error("Error parsing feature properties:", e);
-                    setTur('');
-                    setKimlikId(feature.id || '');
-                    setAd('');
-                    setNumarataj('');
-                    setAciklama('');
-                }
+            if (feature && feature.properties) {
+                const p = feature.properties;
+                setTur(p.tur || '');
+                setKimlikId(feature.id || '');
+                setAd(p.Ad || p.ad || '');
+                setNumarataj(p.numarataj || '');
+                setAciklama(p.aciklama || '');
             } else {
                 setTur('');
                 setKimlikId(feature.id || '');
@@ -92,16 +83,6 @@ export default function LeftSideBar({
         }
         setEditMode(false);
     }, [feature]);
-
-
-    useEffect(() => {
-        console.log('[LeftSideBar geometry debug]', {
-            effectiveGeometry: geometry,
-            modifiedFeatureGeometry: modifiedFeature?.geometry,
-            featureGeometry: feature?.geometry,
-            externalGeometry
-        });
-    }, [geometry, modifiedFeature, feature, externalGeometry]);
 
 
 

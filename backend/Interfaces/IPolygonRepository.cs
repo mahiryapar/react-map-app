@@ -1,4 +1,4 @@
-﻿using backend.Models;
+﻿using basarsoft_react_web_api.Entities;
 
 
 namespace backend.Interfaces
