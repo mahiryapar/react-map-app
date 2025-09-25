@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace basarsoft_react_web_api.Entities
 {
@@ -10,6 +11,6 @@ namespace basarsoft_react_web_api.Entities
         public string? tur { get; set; }
         public string? numarataj { get; set; }
         public string? aciklama { get; set; }
-        public Polygon? Geometry { get; set; }   
+        public Polygon? Geometry { get; set; }  
     }
 }

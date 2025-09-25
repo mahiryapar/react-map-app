@@ -47,15 +47,15 @@ namespace backend.Services
             return true;
         }
 
-        public async Task<int> GetCount()
+        public async Task<int> GetCount(String Search)
         {
-            var count = await _unitOfWork.Polygons.GetCountAsync();
+            var count = await _unitOfWork.Polygons.GetCountAsync(Search);
             return count;
         }
 
-        public async Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber, int pageSize)
+        public async Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber, int pageSize, String S)
         {
-            var data = await _unitOfWork.Polygons.GetPagedAsync(pageNumber,pageSize);
+            var data = await _unitOfWork.Polygons.GetPagedAsync(pageNumber,pageSize,S);
             var list = data.Select(EntitytoPagedDto);
             return list;  
         }

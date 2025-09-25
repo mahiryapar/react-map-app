@@ -9,8 +9,8 @@ namespace backend.Interfaces
     {
         Task<PolygonEntity?> GetByIdAsync(int id);
         Task<IEnumerable<PolygonEntity>> GetAllAsync();
-        Task<IEnumerable<PolygonEntity>> GetPagedAsync(int pageNumber, int pageSize);
-        Task<int> GetCountAsync();
+        Task<IEnumerable<PolygonEntity>> GetPagedAsync(int pageNumber, int pageSize, String Search);
+        Task<int> GetCountAsync(String Search);
         Task AddSync(PolygonEntity entity);
         void Remove(PolygonEntity entity);
         void Update(PolygonEntity entity);

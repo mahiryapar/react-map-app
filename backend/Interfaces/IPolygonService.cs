@@ -10,8 +10,8 @@ namespace backend.Interfaces
         Task<PolygonDto> CreateAsync(PolygonModel model);
         Task<PolygonDto> UpdateAsync(PolygonModel model);
         Task<IEnumerable<PolygonDto>> GetAllAsync();
-        Task<int> GetCount();
-        Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber,int pageSize);
+        Task<int> GetCount(String Search);
+        Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber,int pageSize,String search);
         Task<bool> DeleteAsync(int id);
     }
 }

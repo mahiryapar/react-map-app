@@ -34,13 +34,15 @@ export async function updatePolygon({ id, geometry, properties }) {
 }
 
 
-export async function fetchDataTable({ signal, first = 0, rows = 10, sortField = null, sortOrder = null } = {}) {
+
+export async function fetchDataTable({ signal, first = 0 , search= '', rows = 10, sortField = null, sortOrder = null } = {}) {
   const safeRows = Number(rows) > 0 ? Number(rows) : 10;
   const pageIndex0 = Math.floor(Number(first || 0) / safeRows);
 
   const params = new URLSearchParams({
     page: String(pageIndex0 + 1), // backend 1-based page number
     size: String(safeRows),
+    search: search.trim() || '',
   });
 
   if (sortField) {

@@ -90,7 +90,7 @@ namespace backend.Controllers
 
         // GET /polygons/paged?page=1&size=10
         [HttpGet("paged")]
-        public async Task<IActionResult> GetPolygonsPaged([FromQuery] int page = 1, [FromQuery] int size = 10)
+        public async Task<IActionResult> GetPolygonsPaged([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] String search = "")
         {
             try
             {
@@ -99,8 +99,8 @@ namespace backend.Controllers
 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-                var data = await _polygonService.GetPagedPolygonData(page,size);
-                var total = await _polygonService.GetCount();
+                var data = await _polygonService.GetPagedPolygonData(page,size,search);
+                var total = await _polygonService.GetCount(search);
                 return Ok(new {data = data, total = total});
             }
             catch (Exception ex)

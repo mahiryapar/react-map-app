@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using backend.Data;
 using backend.Interfaces;
-using backend.Data;
 using basarsoft_react_web_api.Entities;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace backend.Repositories
@@ -18,16 +19,45 @@ namespace backend.Repositories
             await _context.Polygons.AddAsync(entity);
         }
 
-        public async Task<IEnumerable<PolygonEntity>> GetPagedAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<PolygonEntity>> GetPagedAsync(int pageNumber, int pageSize, string Search)
         {
-            return await _context.Polygons
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+            var query = _context.Polygons.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                Search = Search.Trim();
+
+                query = query.Where(p =>
+                    (!string.IsNullOrEmpty(p.Ad) && EF.Functions.Like(p.Ad, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.tur) && EF.Functions.Like(p.tur, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.numarataj) && EF.Functions.Like(p.numarataj, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.aciklama) && EF.Functions.Like(p.aciklama, $"%{Search}%")) ||
+                    p.Id.ToString().Contains(Search)
+                );
+            }
+
+            return await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public async Task<int> GetCountAsync()
+        public async Task<int> GetCountAsync(String Search)
         {
+            var query = _context.Polygons.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                Search = Search.Trim();
+
+                query = query.Where(p =>
+                    (!string.IsNullOrEmpty(p.Ad) && EF.Functions.Like(p.Ad, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.tur) && EF.Functions.Like(p.tur, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.numarataj) && EF.Functions.Like(p.numarataj, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.aciklama) && EF.Functions.Like(p.aciklama, $"%{Search}%")) ||
+                    p.Id.ToString().Contains(Search)
+                );
+                return await query.CountAsync();
+            }
             return await _context.Polygons.CountAsync();
         }
 

@@ -36,7 +36,7 @@ function useSelectedFeatureEffect(mapRef,selectedFeature, identifiedSourceRef) {
       src.addFeature(feature);
       var view = mapRef.current.getView();
       var extent = feature.getGeometry().getExtent();
-      view.fit(extent, { padding: [20, 20, 20, 20], maxZoom: 17, duration: 300 });
+      view.fit(extent, { padding: [20, 20, 20, 20], maxZoom: 18, duration: 700 });
     } catch (e) {
       console.warn('Selected feature parse error:', e);
     }
