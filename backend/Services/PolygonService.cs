@@ -1,8 +1,9 @@
-﻿using backend.Models;
+﻿using backend.Interfaces;
+using backend.Models;
+using basarsoft_react_web_api.Entities;
+using basarsoft_react_web_api.Models;
 using NetTopologySuite.Geometries;
 using System.Text.Json.Nodes;
-using System.Text.Json;
-using backend.Interfaces;
 
 namespace backend.Services
 {
@@ -24,10 +25,10 @@ namespace backend.Services
 
             var entity = new PolygonEntity
             {
-                Name = model.Properties?["ad"],
-                Properties = model.Properties != null
-                    ? JsonDocument.Parse(JsonSerializer.Serialize(model.Properties))
-                    : null,
+                Ad = model.Properties?["ad"],
+                tur = model.Properties?["tur"],
+                numarataj = model.Properties?["numarataj"],
+                aciklama = model.Properties?["aciklama"],
                 Geometry = ntsPolygon
             };
             await _unitOfWork.Polygons.AddSync(entity);
@@ -46,6 +47,18 @@ namespace backend.Services
             return true;
         }
 
+        public async Task<int> GetCount(String Search)
+        {
+            var count = await _unitOfWork.Polygons.GetCountAsync(Search);
+            return count;
+        }
+
+        public async Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber, int pageSize, String S)
+        {
+            var data = await _unitOfWork.Polygons.GetPagedAsync(pageNumber,pageSize,S);
+            var list = data.Select(EntitytoPagedDto);
+            return list;  
+        }
 
         public async Task<PolygonDto> UpdateAsync(PolygonModel model)
         {
@@ -53,10 +66,10 @@ namespace backend.Services
             if (entity == null)
                 throw new KeyNotFoundException("Polygon bulunamadı.");
             var ntsPolygon = ParseGeoJsonPolygon(model.Geometry!);
-            entity.Name = model.Properties?["ad"];
-            entity.Properties = model.Properties != null
-                ? JsonDocument.Parse(JsonSerializer.Serialize(model.Properties))
-                : null;
+            entity.Ad = model.Properties?["ad"];
+            entity.tur = model.Properties?["tur"];
+            entity.numarataj = model.Properties?["numarataj"];
+            entity.aciklama = model.Properties?["aciklama"];
             entity.Geometry = ntsPolygon;
             await _unitOfWork.Polygons.SaveChangesAsync();
             return EntitytoDto(entity);
@@ -68,20 +81,37 @@ namespace backend.Services
             return list.Select(EntitytoDto);
         }
 
+        private PagedDTO EntitytoPagedDto(PolygonEntity entity)
+        {
+            return new PagedDTO
+            {
+                Id = entity.Id,
+                Ad = entity.Ad,
+                tur = entity.tur,
+                numarataj = entity.numarataj,
+                aciklama = entity.aciklama,
+                Geometry = ToGeoJson(entity.Geometry)
+            };
+        }
 
         private PolygonDto EntitytoDto(PolygonEntity entity)
         {
+            var props = new JsonObject
+            {
+                ["ad"] = entity.Ad ,
+                ["tur"] = entity.tur,
+                ["numarataj"] = entity.numarataj ,
+                ["aciklama"] = entity.aciklama ,
+            };
+
             return new PolygonDto
             {
                 Id = entity.Id,
-                Name = entity.Name,
-                Properties = entity.Properties != null ?
-                JsonNode.Parse(entity.Properties.RootElement.GetRawText()) as JsonObject : null,
-                Geometry = entity.Geometry != null ? ToGeoJson(entity.Geometry) : null
+                Properties = props,
+                Geometry = entity.Geometry != null ? ToGeoJson(entity.Geometry) : null!
             };
         }
    
-        
         private static JsonArray CoordinatesToJsonArray(Coordinate[] coords)
         {
             var array = new JsonArray();
@@ -142,8 +172,6 @@ namespace backend.Services
 
             return GeometryFactory4326.CreateLinearRing(coords.ToArray());
         }
-
-
 
         private static Polygon? ParseGeoJsonPolygon(JsonObject geom)
         {
