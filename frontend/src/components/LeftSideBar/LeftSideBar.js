@@ -6,9 +6,9 @@ function controlInputs(mode = false) {
     inputs.forEach(input => input.disabled = mode);
 }
 
-async function onayla(onAfterSubmit,onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama) {
-    console.log("onayla called with:", { feature, geometry, tur, kimlikId, ad, numarataj, aciklama});
-    if(typeof onSubmit === 'function' && feature){
+async function onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama) {
+    console.log("onayla called with:", { feature, geometry, tur, kimlikId, ad, numarataj, aciklama });
+    if (typeof onSubmit === 'function' && feature) {
         await onSubmit({
             id: feature.id,
             geometry: geometry,
@@ -23,7 +23,7 @@ async function onayla(onAfterSubmit,onSubmit, feature, geometry, tur, kimlikId, 
     onAfterSubmit();
 }
 
-async function sil(id,onDelete,onAfterSubmit) {
+async function sil(id, onDelete, onAfterSubmit) {
     if (typeof onDelete === 'function') {
         await onDelete(id);
     }
@@ -60,6 +60,14 @@ export default function LeftSideBar({
 
     useEffect(() => {
         if (feature) {
+            if ('ad' in feature) {
+                setAd(feature.ad || '');
+                setTur(feature.tur || '');
+                setKimlikId(feature.id || '');
+                setNumarataj(feature.numarataj || '');
+                setAciklama(feature.aciklama || '');
+                return;
+            }
             if (feature && feature.properties) {
                 const p = feature.properties;
                 setTur(p.tur || '');
@@ -159,12 +167,12 @@ export default function LeftSideBar({
                     <button
                         id="confirm-button"
                         type="button"
-                        onClick={() => onayla(onAfterSubmit,onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama)}
+                        onClick={() => onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama)}
                     >Bilgileri Düzenle</button>
                     <button
                         id="delete-button"
                         type="button"
-                        onClick={() => sil(feature.id,onDelete,onAfterSubmit)}
+                        onClick={() => sil(feature.id, onDelete, onAfterSubmit)}
                     >Yapıyı Sil</button>
                 </form>
             </div>

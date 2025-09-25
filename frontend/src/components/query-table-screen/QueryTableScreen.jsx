@@ -6,7 +6,7 @@ import Data_Table from './dataTable/Data-Table';
 
 
 
-export default function QueryTableScreen({ isOpen , onClose}) {
+export default function QueryTableScreen({ isOpen , onClose, onClickRow}) {
 
     useIsOpen(isOpen);
 
@@ -18,7 +18,7 @@ export default function QueryTableScreen({ isOpen , onClose}) {
                     <button id="closeButton" type="button" onClick={onClose}>X</button>
                 </div>
                 <div id="query-table-screen-body">
-                    <Data_Table isOpen={isOpen} />
+                    <Data_Table isOpen={isOpen} onClickRow={onClickRow} />
                 </div>
             </div>
         </div>

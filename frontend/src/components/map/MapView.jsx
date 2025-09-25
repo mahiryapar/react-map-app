@@ -63,7 +63,7 @@ export default function MapView({
 	});
 
 	useIdentify(identifyMode, identifyModeRef);
-	useSelectFeature(selectedFeature, identifiedSourceRef);
+	useSelectFeature(mapRef, selectedFeature, identifiedSourceRef);
 	useModifyMode({ mapRef, identifiedSourceRef, editMode, onFeatureModify, lastModifiedGeometryRef, modifyInteractionRef });
 	useStartup({
 		mapRef,

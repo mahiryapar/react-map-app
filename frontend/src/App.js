@@ -111,6 +111,7 @@ function App() {
       <QueryTableScreen 
         onClose={() => setQueryScreenOpen(false)}
         isOpen={queryScreenOpen}
+        onClickRow={(feature) => { setLeftSidebarOpen(true); setSelectedFeature(feature); setQueryScreenOpen(false); }}
       />
       <LeftSideBar isOpen={leftSidebarOpen}
         geometry={geometry}
