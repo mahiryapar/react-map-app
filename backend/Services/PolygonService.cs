@@ -1,9 +1,9 @@
-﻿using backend.Models;
+﻿using backend.Interfaces;
+using backend.Models;
+using basarsoft_react_web_api.Entities;
+using basarsoft_react_web_api.Models;
 using NetTopologySuite.Geometries;
 using System.Text.Json.Nodes;
-using System.Text.Json;
-using backend.Interfaces;
-using basarsoft_react_web_api.Entities;
 
 namespace backend.Services
 {
@@ -47,14 +47,17 @@ namespace backend.Services
             return true;
         }
 
-        public async Task<JsonObject> GetPagedPolygonData()
+        public async Task<int> GetCount()
         {
-            var data = new { };
+            var count = await _unitOfWork.Polygons.GetCountAsync();
+            return count;
+        }
 
-
-
-
-            return data;
+        public async Task<IEnumerable<PagedDTO>> GetPagedPolygonData(int pageNumber, int pageSize)
+        {
+            var data = await _unitOfWork.Polygons.GetPagedAsync(pageNumber,pageSize);
+            var list = data.Select(EntitytoPagedDto);
+            return list;  
         }
 
         public async Task<PolygonDto> UpdateAsync(PolygonModel model)
@@ -76,6 +79,19 @@ namespace backend.Services
         {
             var list = await _unitOfWork.Polygons.GetAllAsync();
             return list.Select(EntitytoDto);
+        }
+
+        private PagedDTO EntitytoPagedDto(PolygonEntity entity)
+        {
+            return new PagedDTO
+            {
+                Id = entity.Id,
+                Ad = entity.Ad,
+                tur = entity.tur,
+                numarataj = entity.numarataj,
+                aciklama = entity.aciklama,
+                Geometry = ToGeoJson(entity.Geometry)
+            };
         }
 
         private PolygonDto EntitytoDto(PolygonEntity entity)

@@ -99,8 +99,9 @@ namespace backend.Controllers
 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-                var data = await _polygonService.GetPagedPolygonData();
-                return Ok(data);
+                var data = await _polygonService.GetPagedPolygonData(page,size);
+                var total = await _polygonService.GetCount();
+                return Ok(new {data = data, total = total});
             }
             catch (Exception ex)
             {

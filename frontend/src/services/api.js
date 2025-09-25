@@ -34,22 +34,12 @@ export async function updatePolygon({ id, geometry, properties }) {
 }
 
 
-/**
- * Server-side paginated table data fetcher
- * @param {Object} params
- * @param {AbortSignal} [params.signal] - optional AbortController signal
- * @param {number} [params.first=0] - DataTable's offset (zero-based)
- * @param {number} [params.rows=10] - page size
- * @param {string|null} [params.sortField=null] - field name to sort by
- * @param {1|-1|null|string} [params.sortOrder=null] - 1 asc, -1 desc, or 'asc'/'desc'
- * @returns {Promise<{ data: any[], total: number }>}
- */
 export async function fetchDataTable({ signal, first = 0, rows = 10, sortField = null, sortOrder = null } = {}) {
   const safeRows = Number(rows) > 0 ? Number(rows) : 10;
-  const page = Math.floor(Number(first || 0) / safeRows);
+  const pageIndex0 = Math.floor(Number(first || 0) / safeRows);
 
   const params = new URLSearchParams({
-    page: String(page),
+    page: String(pageIndex0 + 1), // backend 1-based page number
     size: String(safeRows),
   });
 
@@ -74,7 +64,7 @@ export async function fetchDataTable({ signal, first = 0, rows = 10, sortField =
     payload = [];
   }
   console.log("Fetched payload:", payload);
-  const data = payload.items;
+  const data = payload.data;
 
   const total = payload.total;
 
