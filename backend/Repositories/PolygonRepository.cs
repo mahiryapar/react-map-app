@@ -28,7 +28,7 @@ namespace backend.Repositories
                 Search = Search.Trim();
 
                 query = query.Where(p =>
-                    (!string.IsNullOrEmpty(p.Ad) && EF.Functions.Like(p.Ad, $"%{Search}%")) ||
+                    (!string.IsNullOrEmpty(p.Ad) && EF.Functions.Like(p.Ad, $"%{Search}%")) || 
                     (!string.IsNullOrEmpty(p.tur) && EF.Functions.Like(p.tur, $"%{Search}%")) ||
                     (!string.IsNullOrEmpty(p.numarataj) && EF.Functions.Like(p.numarataj, $"%{Search}%")) ||
                     (!string.IsNullOrEmpty(p.aciklama) && EF.Functions.Like(p.aciklama, $"%{Search}%")) ||
