@@ -1,0 +1,138 @@
+/* Container behaves like a centered, responsive modal panel */
+#query-table-screen {
+    position: fixed;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Responsive sizing */
+    width: min(96vw, 1200px);
+    height: min(85vh, 900px);
+
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    backdrop-filter: saturate(120%) blur(2px);
+}
+
+#query-table-screen-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* keep scroll in body section */
+}
+
+#query-table-screen-header{
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: .75rem 1rem;
+    min-height: 56px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+}
+
+
+#closeButton{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 8px 12px;
+    background: #b91c1c;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #fff;
+}
+
+
+
+#query-table-screen-body{
+    width: 100%;
+    flex: 1 1 auto; /* fill remaining height */
+    padding: 0.75rem 1rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    font-size: 1rem;
+    color: #111827;
+    overflow: auto;
+}
+
+
+#go_on_map{
+    padding:8px;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+/* PrimeReact DataTable tweaks for better responsiveness inside the panel */
+#query-table-screen .p-datatable {
+    width: 100%;
+}
+
+#query-table-screen .p-datatable table{
+    width: 100%;
+}
+
+/* Keep cells compact and vertically centered */
+#query-table-screen .p-datatable .p-datatable-tbody > tr > td{
+    vertical-align: middle;
+}
+
+/* Truncate very long text but keep full value on hover */
+#query-table-screen .p-datatable .p-datatable-tbody > tr > td .truncate{
+    max-width: 500px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+    #query-table-screen{
+        top: 4vh;
+        width: 94vw;
+        height: 84vh;
+        border-radius: 18px;
+    }
+}
+
+/* Mobile: use full-screen modal layout */
+@media (max-width: 640px){
+    #query-table-screen{
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    #query-table-screen-header{
+        padding: .75rem 3rem .75rem 1rem; /* allow room for close button */
+        font-size: 1rem;
+    }
+
+    #closeButton{
+        top: 8px;
+        right: 8px;
+        padding: 10px 12px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+    }
+}

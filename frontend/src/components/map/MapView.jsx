@@ -11,6 +11,7 @@ import { useSelectFeature } from './hooks/useSelectFeature';
 import { useModifyMode } from './hooks/useModifyMode';
 import { usePersisted } from './hooks/usePersisted';
 import { useLoadIdentifiedFeature, buildFeatureCollection } from './utils/feature';
+import './style/MapView.css';
 
 export const DEFAULT_LON = config?.defaultLon;
 export const DEFAULT_LAT = config?.defaultLat;
@@ -62,7 +63,7 @@ export default function MapView({
 	});
 
 	useIdentify(identifyMode, identifyModeRef);
-	useSelectFeature(selectedFeature, identifiedSourceRef);
+	useSelectFeature(mapRef, selectedFeature, identifiedSourceRef);
 	useModifyMode({ mapRef, identifiedSourceRef, editMode, onFeatureModify, lastModifiedGeometryRef, modifyInteractionRef });
 	useStartup({
 		mapRef,

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;  
-using backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using System.Text.Json;
+using basarsoft_react_web_api.Entities;
 
 
 
@@ -17,11 +17,6 @@ namespace backend.Data
         {
             // PostGIS extension
             modelBuilder.HasPostgresExtension("postgis");
-
-            // JSONB için Properties alanı (JsonDocument olarak sakla)
-            modelBuilder.Entity<PolygonEntity>()
-                .Property(p => p.Properties)
-                .HasColumnType("jsonb");
 
             // Geometry için PostGIS desteği
             modelBuilder.Entity<PolygonEntity>()
