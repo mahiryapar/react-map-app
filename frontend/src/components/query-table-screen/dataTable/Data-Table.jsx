@@ -85,6 +85,7 @@ export default function Data_Table({ isOpen , onClickRow}) {
             <Column field="id" header="ID" style={{ width: '100px' }}></Column>
             <Column field="ad" header="Ad" body={(d) => <span className="truncate" title={d.ad}>{d.ad}</span>}></Column>
             <Column field="tur" header="Tür" style={{ width: '120px' }}></Column>
+            <Column field="daire_sayisi" header="Daire Sayısı" style={{ width: '140px' }}></Column>
             <Column field="numarataj" header="Numarataj" style={{ width: '140px' }}></Column>
             <Column field="aciklama" header="Açıklama" body={(d) => <span className="truncate" title={d.aciklama}>{d.aciklama}</span>}></Column>
         </DataTable>

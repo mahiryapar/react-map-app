@@ -11,6 +11,7 @@ namespace basarsoft_react_web_api.Entities
         public string? tur { get; set; }
         public string? numarataj { get; set; }
         public string? aciklama { get; set; }
+        public int daire_sayisi { get; set; }
         public Polygon? Geometry { get; set; }  
     }
 }

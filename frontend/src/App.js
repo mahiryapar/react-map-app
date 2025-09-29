@@ -84,6 +84,11 @@ function App() {
         }}>
           Sorgu Paneli
         </button>
+        <button id="heatmap-button" onClick={() => {
+          mapApiRef.current?.toggleHeatmap();
+        }}>
+          Daire Sayısı Isı Haritası
+        </button>
         </div>
         <div id="input-group" style={{ marginBottom: '8px' }}>
           <label htmlFor='lon-input' style={{ fontWeight: 600 }}>Longitude</label><br />

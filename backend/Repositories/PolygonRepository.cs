@@ -32,7 +32,8 @@ namespace backend.Repositories
                     (!string.IsNullOrEmpty(p.tur) && EF.Functions.Like(p.tur, $"%{Search}%")) ||
                     (!string.IsNullOrEmpty(p.numarataj) && EF.Functions.Like(p.numarataj, $"%{Search}%")) ||
                     (!string.IsNullOrEmpty(p.aciklama) && EF.Functions.Like(p.aciklama, $"%{Search}%")) ||
-                    p.Id.ToString().Contains(Search)
+                    p.Id.ToString().Contains(Search) ||
+                    p.daire_sayisi.ToString().Contains(Search)
                 );
             }
 

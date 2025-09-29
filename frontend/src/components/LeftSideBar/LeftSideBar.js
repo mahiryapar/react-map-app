@@ -6,8 +6,8 @@ function controlInputs(mode = false) {
     inputs.forEach(input => input.disabled = mode);
 }
 
-async function onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama) {
-    console.log("onayla called with:", { feature, geometry, tur, kimlikId, ad, numarataj, aciklama });
+async function onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, daire_sayisi, aciklama) {
+    console.log("onayla called with:", { feature, geometry, tur, kimlikId, ad, numarataj, daire_sayisi, aciklama });
     if (typeof onSubmit === 'function' && feature) {
         await onSubmit({
             id: feature.id,
@@ -15,6 +15,7 @@ async function onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId,
             properties: {
                 tur,
                 ad,
+                daire_sayisi,
                 numarataj,
                 aciklama
             }
@@ -47,6 +48,7 @@ export default function LeftSideBar({
     const [tur, setTur] = useState('');
     const [kimlikId, setKimlikId] = useState('');
     const [ad, setAd] = useState('');
+    const [daire_sayisi, setDaireSayisi] = useState(0);
     const [numarataj, setNumarataj] = useState('');
     const [aciklama, setAciklama] = useState('');
     const geometry = useMemo(() => {
@@ -64,6 +66,7 @@ export default function LeftSideBar({
                 setAd(feature.ad || '');
                 setTur(feature.tur || '');
                 setKimlikId(feature.id || '');
+                setDaireSayisi(feature.daire_sayisi || 0);
                 setNumarataj(feature.numarataj || '');
                 setAciklama(feature.aciklama || '');
                 return;
@@ -72,12 +75,14 @@ export default function LeftSideBar({
                 const p = feature.properties;
                 setTur(p.tur || '');
                 setKimlikId(feature.id || '');
+                setDaireSayisi(p.daire_sayisi || 0);
                 setAd(p.Ad || p.ad || '');
                 setNumarataj(p.numarataj || '');
                 setAciklama(p.aciklama || '');
             } else {
                 setTur('');
                 setKimlikId(feature.id || '');
+                setDaireSayisi(0);
                 setAd('');
                 setNumarataj('');
                 setAciklama('');
@@ -85,6 +90,7 @@ export default function LeftSideBar({
         } else {
             setTur('');
             setKimlikId('');
+            setDaireSayisi(0);
             setAd('');
             setNumarataj('');
             setAciklama('');
@@ -154,6 +160,12 @@ export default function LeftSideBar({
                         Ad
                         <input type="text" value={ad} onChange={(e) => setAd(e.target.value)} placeholder="Alan adı" disabled={true} />
                     </label>
+                    {tur === 'bina' && (
+                        <label>
+                            Daire Sayısı
+                            <input type="number" value={daire_sayisi} min="0" max="150" onChange={(e) => setDaireSayisi(e.target.value)} placeholder="Daire sayısı" disabled={true} />
+                        </label>
+                    )}
 
                     <label>
                         Numarataj
@@ -167,7 +179,7 @@ export default function LeftSideBar({
                     <button
                         id="confirm-button"
                         type="button"
-                        onClick={() => onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, aciklama)}
+                        onClick={() => onayla(onAfterSubmit, onSubmit, feature, geometry, tur, kimlikId, ad, numarataj, daire_sayisi, aciklama)}
                     >Bilgileri Düzenle</button>
                     <button
                         id="delete-button"

@@ -7,6 +7,7 @@ import OLMap from 'ol/Map';
 import View from 'ol/View';
 import { fromLonLat } from 'ol/proj';
 import config from '../config.json';
+import { Tile } from 'ol';
 const GEOSERVER_URL = config?.GeoServer?.url;
 const GEOSERVER_WORKSPACE = config?.GeoServer?.workspace;
 const GEOSERVER_LAYER = config?.GeoServer?.layerName;
@@ -52,11 +53,35 @@ function createGeoServerWMSLayer() {
   });
 }
 
+function createHeatmapLayer() {
+  const layerName = `${GEOSERVER_WORKSPACE}:polygons_centroids`;
+  return new TileLayer({
+    source: new TileWMS({
+      url: `${GEOSERVER_URL}/wms`,
+      params: {
+        LAYERS: layerName,
+        STYLES: 'heatmap_daire_sayisi',
+        TILED: true,
+        FORMAT: 'image/png',
+        TRANSPARENT: true,
+        VERSION: '1.1.1',
+      },
+      serverType: 'geoserver',
+      crossOrigin: 'anonymous',
+    }),
+    visible: true,
+  });
+}
 
-function createOLMap(divRef, lon, lat, zoom, wmsLayerRef) {
+
+function createOLMap(divRef, lon, lat, zoom, wmsLayerRef, heatmapLayerRef) {
   const wmsLayer = createGeoServerWMSLayer();
+  const heatmapLayer = createHeatmapLayer();
   if (wmsLayerRef) {
     wmsLayerRef.current = wmsLayer;
+  }
+  if (heatmapLayerRef) {
+    heatmapLayerRef.current = heatmapLayer;
   }
   return new OLMap({
     target: divRef.current,
@@ -65,6 +90,7 @@ function createOLMap(divRef, lon, lat, zoom, wmsLayerRef) {
         source: new OSM(),
       }),
       wmsLayer,
+      heatmapLayer
     ],
     view: new View({
       center: fromLonLat([lon, lat]),
