@@ -73,14 +73,14 @@ export async function fetchDataTable({ signal, first = 0 , search= '', rows = 10
   return { data, total: Number(total) || 0 };
 }
 
-// export async function fetchPolygons() {
-//   const resp = await fetch(`${BASE_URL}/polygons`);
-//   if (!resp.ok) {
-//     const text = await resp.text();
-//     throw new Error(text || `HTTP ${resp.status}`);
-//   }
-//   return resp.json().catch(() => ({}));
-// }
+export async function fetchPolygons() {
+  const resp = await fetch(`${BASE_URL}/polygons`);
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(text || `HTTP ${resp.status}`);
+  }
+  return resp.json().catch(() => ({}));
+}
 
 
 

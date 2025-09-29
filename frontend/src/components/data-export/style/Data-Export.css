@@ -1,0 +1,77 @@
+#data-export-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: none;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80%;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 24px;
+    z-index: 1001;
+}
+
+#data-export-container.open {
+    display: block;
+}
+
+#data-export-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* keep scroll in body section */
+}
+
+
+#data-export-header {
+    flex: 0 0 auto;
+    padding: 16px 24px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#data-export-body {
+    flex: 1 1 auto;
+    padding: 16px 24px;
+    overflow-y: auto;
+}
+
+#data-export-footer {
+    flex: 0 0 auto;
+    padding: 16px 24px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+
+#data-export-cancel-button{
+    border: 1px solid;
+    border-color: #d1d5db;
+    background: rgb(217, 81, 81);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#data-export-export-button {
+   padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+
+#data-export-format{
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: .95rem;
+}
