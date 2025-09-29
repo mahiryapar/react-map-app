@@ -47,6 +47,7 @@ export default function MapView({
 	const polygonInteractionRef = useRef(null);
 	const polygonActiveRef = useRef(false);
 	const wmsLayerRef = useRef(null);
+	const heatmapLayerRef = useRef(null);
 	const identifiedSourceRef = useRef(new VectorSource());
 	const modifyInteractionRef = useRef(null);
 	const identifiedLayerRef = useRef(null);
@@ -72,6 +73,7 @@ export default function MapView({
 		zoom,
 		divRef,
 		wmsLayerRef,
+		heatmapLayerRef,
 		drawSourceRef,
 		persistedSourceRef,
 		identifiedSourceRef,

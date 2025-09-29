@@ -71,3 +71,13 @@ body{
     color: white;
     cursor: pointer;
 }
+
+#heatmap-button{
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}

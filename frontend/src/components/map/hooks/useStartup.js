@@ -7,15 +7,14 @@ import { singleClickHandler, setKeyHandler } from '../utils/handlers';
 import { togglePolygon } from '../utils/polygon';
 const FIT_EXTENT_OPTIONS = { padding: [20,20,20,20], maxZoom: 18, duration: 300 };
 
-function useStartUpEffect({ mapRef, lon, lat, zoom, divRef, wmsLayerRef, drawSourceRef, persistedSourceRef, identifiedSourceRef, identifiedLayerRef, polygonInteractionRef, polygonActiveRef, clickModeRef, identifyModeRef, onPolygonComplete, onFeatureIdentify, loadIdentifiedFeature, persistedFeatures, onReady }) {
+function useStartUpEffect({ mapRef, lon, lat, zoom, divRef, wmsLayerRef, heatmapLayerRef, drawSourceRef, persistedSourceRef, identifiedSourceRef, identifiedLayerRef, polygonInteractionRef, polygonActiveRef, clickModeRef, identifyModeRef, onPolygonComplete, onFeatureIdentify, loadIdentifiedFeature, persistedFeatures, onReady }) {
   useEffect(() => {
     if (!divRef.current) return;
-  mapRef.current = createOLMap(divRef, lon, lat, zoom, wmsLayerRef);
+  mapRef.current = createOLMap(divRef, lon, lat, zoom, wmsLayerRef, heatmapLayerRef);
     const map = mapRef.current;
     if (!map) return;
     createDrawLayer(map, drawSourceRef);
     createPersistedLayer(map, persistedSourceRef);
-    // Identified (editable) feature layer - blue style
     identifiedLayerRef.current = new VectorLayer({
       source: identifiedSourceRef.current,
       style: new Style({
@@ -68,12 +67,24 @@ function useStartUpEffect({ mapRef, lon, lat, zoom, divRef, wmsLayerRef, drawSou
         refreshWMS: () => {
           try {
             const layer = wmsLayerRef.current;
+            const heatmapLayer = heatmapLayerRef.current;
             const src = layer?.getSource?.();
-            if (src?.updateParams) {
-              src.updateParams({ _cb: Date.now() });
-            } else if (src?.refresh) {
-              src.refresh();
-            }
+            const heatsrc = heatmapLayer?.getSource?.();
+            const bust = { _cb: Date.now() };
+            // Bust cache on both layers so both tiles reload
+            if (src?.updateParams) src.updateParams(bust);
+            if (heatsrc?.updateParams) heatsrc.updateParams(bust);
+            // Fallback for sources without updateParams
+            if (src?.refresh) src.refresh();
+            if (heatsrc?.refresh) heatsrc.refresh();
+          } catch (_) {}
+        },
+        toggleHeatmap: () => {
+          try {
+            const layer = heatmapLayerRef.current;
+            if (!layer) return;
+            const vis = layer.getVisible();
+            layer.setVisible(!vis);
           } catch (_) {}
         },
       });

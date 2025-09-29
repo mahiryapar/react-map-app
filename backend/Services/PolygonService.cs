@@ -29,6 +29,7 @@ namespace backend.Services
                 tur = model.Properties?["tur"],
                 numarataj = model.Properties?["numarataj"],
                 aciklama = model.Properties?["aciklama"],
+                daire_sayisi = model.Properties.TryGetValue("daire_sayisi", out var ds) && int.TryParse(ds, out var dsInt) ? dsInt : 0,
                 Geometry = ntsPolygon
             };
             await _unitOfWork.Polygons.AddSync(entity);
@@ -69,6 +70,7 @@ namespace backend.Services
             entity.Ad = model.Properties?["ad"];
             entity.tur = model.Properties?["tur"];
             entity.numarataj = model.Properties?["numarataj"];
+            entity.daire_sayisi = model.Properties.TryGetValue("daire_sayisi", out var ds) && int.TryParse(ds, out var dsInt) ? dsInt : entity.daire_sayisi;
             entity.aciklama = model.Properties?["aciklama"];
             entity.Geometry = ntsPolygon;
             await _unitOfWork.Polygons.SaveChangesAsync();
@@ -88,6 +90,7 @@ namespace backend.Services
                 Id = entity.Id,
                 Ad = entity.Ad,
                 tur = entity.tur,
+                daire_sayisi = entity.daire_sayisi.ToString(),
                 numarataj = entity.numarataj,
                 aciklama = entity.aciklama,
                 Geometry = ToGeoJson(entity.Geometry)

@@ -1,17 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import './style/RightSideBar.css';  
+import './style/RightSideBar.css';
 
 
 export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onCancel }) {
     const [tur, setTur] = useState('');
     const [ad, setAd] = useState('');
     const [numarataj, setNumarataj] = useState('');
+    const [daire_sayisi, setDaireSayisi] = useState(0);
     const [aciklama, setAciklama] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
 
-    
+
     useEffect(() => {
         setMessage(null);
         setError(null);
@@ -33,6 +34,9 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                 properties: {
                     tur,
                     ad,
+                    daire_sayisi: tur === 'bina'
+                        ? (daire_sayisi?.toString().trim() || '0') // CHANGED: string gönder
+                        : null,
                     numarataj: numarataj || null,
                     aciklama: aciklama || null,
                 },
@@ -41,6 +45,7 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
             setMessage('Başarıyla kaydedildi.');
             setTur('');
             setAd('');
+            setDaireSayisi(0);
             setNumarataj('');
             setAciklama('');
             if (typeof onSuccess === 'function') {
@@ -85,11 +90,20 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                     <input type="text" value={ad} onChange={(e) => setAd(e.target.value)} placeholder="Alan adı" required />
                 </label>
 
+                {tur === 'bina' && (
+                    <>
+                        <label>
+                            Daire Sayısı
+                            <input type="number" value={daire_sayisi} onChange={(e) => setDaireSayisi(e.target.value)} placeholder="Daire sayısı" min="0" max="150" />
+                        </label>
+
+                    </>
+                )}
+
                 <label>
                     Numarataj
                     <input type="text" value={numarataj} onChange={(e) => setNumarataj(e.target.value)} placeholder="Örn: 25/A" />
                 </label>
-
                 <label>
                     Açıklama
                     <textarea value={aciklama} onChange={(e) => setAciklama(e.target.value)} rows={3} placeholder="Not ekleyin" />
