@@ -4,6 +4,7 @@ import RightSideBar from './components/RightSideBar/RightSideBar.js';
 import { savePolygon/*, fetchPolygons */,updatePolygon, deletePolygon} from './services/api';
 import LeftSideBar from './components/LeftSideBar/LeftSideBar.js';
 import QueryTableScreen from './components/query-table-screen/QueryTableScreen.jsx'; 
+import DataExport from './components/data-export/Data-Export.jsx';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [identifyMode, setIdentifyMode] = useState(false);
+  const [dataExportOpen, setDataExportOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [queryScreenOpen, setQueryScreenOpen] = useState(false);
   const mapApiRef = React.useRef(null);
@@ -89,6 +91,11 @@ function App() {
         }}>
           Daire Sayısı Isı Haritası
         </button>
+        <button id="data-export-button" onClick={() => {
+          setDataExportOpen(!dataExportOpen);
+        }}>
+          Veri İndir
+        </button>
         </div>
         <div id="input-group" style={{ marginBottom: '8px' }}>
           <label htmlFor='lon-input' style={{ fontWeight: 600 }}>Longitude</label><br />
@@ -113,6 +120,10 @@ function App() {
           />
         </div>
       </div>
+      <DataExport
+        isOpen={dataExportOpen}
+        onClose={() => setDataExportOpen(false)}
+      />  
       <QueryTableScreen 
         onClose={() => setQueryScreenOpen(false)}
         isOpen={queryScreenOpen}
