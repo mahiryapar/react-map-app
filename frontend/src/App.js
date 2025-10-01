@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { DEFAULT_LON, DEFAULT_LAT } from './components/map/MapView';
 import RightSideBar from './components/RightSideBar/RightSideBar.js';
-import { savePolygon/*, fetchPolygons */,updatePolygon, deletePolygon} from './services/api';
+import { savePolygon,uploadImages,updatePolygon, deletePolygon} from './services/api';
 import LeftSideBar from './components/LeftSideBar/LeftSideBar.js';
 import QueryTableScreen from './components/query-table-screen/QueryTableScreen.jsx'; 
 import DataExport from './components/data-export/Data-Export.jsx';
@@ -51,8 +51,13 @@ function App() {
     if (!Number.isNaN(v)) setLat(v);
   };
 
-  const handleSubmit = async (payload) => {
-    await savePolygon(payload);
+  const handleSubmit = async (payload, files) => {
+    const res = await savePolygon(payload);
+    const polygonId = res?.entity?.id;
+    console.log("Saved polygon ID:", polygonId);
+    if (files && files.length > 0) {
+      await uploadImages(files, polygonId);
+    }
   };
 
   const handlePolygonComplete = (geom) => {

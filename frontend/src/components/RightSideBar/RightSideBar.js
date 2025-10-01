@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './style/RightSideBar.css';
 
 
@@ -10,7 +10,9 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
     const [aciklama, setAciklama] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [error, setError] = useState(null);
+    const fileInputRef = useRef(null);
 
 
     useEffect(() => {
@@ -41,13 +43,17 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                     aciklama: aciklama || null,
                 },
             };
-            await onSubmit?.(payload);
+            await onSubmit?.(payload, selectedFiles);
             setMessage('Başarıyla kaydedildi.');
             setTur('');
             setAd('');
             setDaireSayisi(0);
             setNumarataj('');
             setAciklama('');
+            setSelectedFiles([]);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
             if (typeof onSuccess === 'function') {
                 onSuccess();
             }
@@ -107,6 +113,18 @@ export default function SidebarForm({ geometry, isOpen, onSubmit, onSuccess, onC
                 <label>
                     Açıklama
                     <textarea value={aciklama} onChange={(e) => setAciklama(e.target.value)} rows={3} placeholder="Not ekleyin" />
+                </label>
+
+                <label>
+                    Resimler (Opsiyonel)
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        placeholder='Resim seçin'
+                        ref={fileInputRef}
+                        onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
+                    />
                 </label>
 
                 <div className="actions">

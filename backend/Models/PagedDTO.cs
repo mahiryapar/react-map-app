@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace basarsoft_react_web_api.Models
+namespace backend.Models
 {
     public class PagedDTO
     {

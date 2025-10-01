@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using basarsoft_react_web_api.Entities;
+using backend.Entities;
 using backend.Models;
 
 namespace backend.Interfaces

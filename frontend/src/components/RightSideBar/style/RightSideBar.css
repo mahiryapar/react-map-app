@@ -22,6 +22,7 @@
 #polygon-form-sidebar form{
     display: grid;
     gap: 8px;
+    overflow: hidden;
 }
 
 #polygon-form-sidebar label{
@@ -37,6 +38,16 @@
     border-radius: 6px;
     border: 1px solid #d1d5db;
     font-size: .95rem;
+    max-width: 90%;
+}
+
+#polygon-form-sidebar input[type="file"]::file-selector-button {
+   padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
 }
 
 #polygon-form-sidebar .actions{

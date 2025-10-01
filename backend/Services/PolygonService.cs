@@ -1,8 +1,8 @@
 ﻿using backend.Interfaces;
 using backend.Models;
-using basarsoft_react_web_api.Entities;
-using basarsoft_react_web_api.Models;
+using backend.Entities;
 using NetTopologySuite.Geometries;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace backend.Services
@@ -104,6 +104,7 @@ namespace backend.Services
                 ["ad"] = entity.Ad ,
                 ["tur"] = entity.tur,
                 ["numarataj"] = entity.numarataj ,
+                ["daire_sayisi"] = entity.daire_sayisi.ToString(),
                 ["aciklama"] = entity.aciklama ,
             };
 

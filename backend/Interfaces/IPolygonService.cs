@@ -1,6 +1,5 @@
 ﻿using backend.Models;
-using basarsoft_react_web_api.Entities;
-using basarsoft_react_web_api.Models;
+using backend.Entities;
 using System.Text.Json.Nodes;
 
 namespace backend.Interfaces

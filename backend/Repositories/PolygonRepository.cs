@@ -1,6 +1,6 @@
 ﻿using backend.Data;
 using backend.Interfaces;
-using basarsoft_react_web_api.Entities;
+using backend.Entities;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 

@@ -10,9 +10,11 @@ namespace backend.Repositories
         {
             _context = context;
             Polygons = new PolygonRepository(_context);
+            Images = new ImagesRepository(_context);
         }
 
         public IPolygonRepository Polygons { get; private set; }
+        public IImagesRepository Images { get; private set; }
 
         public async Task<int> CompleteAsync()
         {

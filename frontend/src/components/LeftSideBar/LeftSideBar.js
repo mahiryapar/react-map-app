@@ -1,5 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import './style/LeftSideBar.css';
+import { getImageCount } from '../../services/api';
+import { get } from 'ol/proj';
 
 function controlInputs(mode = false) {
     const inputs = document.querySelectorAll('#polygon-form input, #polygon-form select, #polygon-form textarea');
@@ -31,7 +33,15 @@ async function sil(id, onDelete, onAfterSubmit) {
     onAfterSubmit();
 }
 
-
+async function getImageCountt(polygonId) {
+    try {
+        const count = await getImageCount(polygonId);
+        return count;
+    } catch (error) {
+        console.error("Error fetching image count:", error);
+        return 0;
+    }
+}
 
 export default function LeftSideBar({
     onDelete,
@@ -50,7 +60,10 @@ export default function LeftSideBar({
     const [ad, setAd] = useState('');
     const [daire_sayisi, setDaireSayisi] = useState(0);
     const [numarataj, setNumarataj] = useState('');
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [availableFileCount, setAvailableFileCount] = useState(0);
     const [aciklama, setAciklama] = useState('');
+    const fileInputRef = useRef(null);
     const geometry = useMemo(() => {
         return (
             modifiedFeature?.geometry ||
@@ -63,6 +76,12 @@ export default function LeftSideBar({
     useEffect(() => {
         if (feature) {
             if ('ad' in feature) {
+                getImageCount(feature.id).then(count => {
+                    setAvailableFileCount(count || 0);
+                }).catch(err => {
+                    console.error("Error fetching image count:", err);
+                    setAvailableFileCount(0);
+                });
                 setAd(feature.ad || '');
                 setTur(feature.tur || '');
                 setKimlikId(feature.id || '');
@@ -72,6 +91,12 @@ export default function LeftSideBar({
                 return;
             }
             if (feature && feature.properties) {
+                getImageCount(feature.id).then(count => {
+                    setAvailableFileCount(count || 0);
+                }).catch(err => {
+                    console.error("Error fetching image count:", err);
+                    setAvailableFileCount(0);
+                });
                 const p = feature.properties;
                 setTur(p.tur || '');
                 setKimlikId(feature.id || '');
@@ -83,6 +108,10 @@ export default function LeftSideBar({
                 setTur('');
                 setKimlikId(feature.id || '');
                 setDaireSayisi(0);
+                setSelectedFiles([]);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                }
                 setAd('');
                 setNumarataj('');
                 setAciklama('');
@@ -92,6 +121,10 @@ export default function LeftSideBar({
             setKimlikId('');
             setDaireSayisi(0);
             setAd('');
+            setSelectedFiles([]);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
             setNumarataj('');
             setAciklama('');
         }
@@ -175,6 +208,23 @@ export default function LeftSideBar({
                     <label>
                         Açıklama
                         <textarea value={aciklama} onChange={(e) => setAciklama(e.target.value)} rows={3} placeholder="Not ekleyin" disabled={true} />
+                    </label>
+
+                    <label>
+                        Resimler (Opsiyonel)
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            disabled={true}
+                            ref={fileInputRef}
+                            onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
+                        />
+                    </label>
+
+                    <label>
+                        Mevcut Resimler: {availableFileCount === 0 ? 'Resim Bulunamadı.' : availableFileCount + " adet resim bulundu."} 
+                        <button id="img-view-screen-button" disabled={availableFileCount === 0} type="button" onClick={null}>Resimleri Görüntüle</button>
                     </label>
                     <button
                         id="confirm-button"

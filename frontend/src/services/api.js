@@ -1,10 +1,10 @@
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5108';
 
-export async function savePolygon({ geometry, properties }) {
+export async function savePolygon({ geometry, properties }, resim_yollari = []) {
   const resp = await fetch(`${BASE_URL}/polygons`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ geometry, properties }),
+    body: JSON.stringify({ geometry, properties, resim_yollari }),
   });
   if (!resp.ok) {
     const text = await resp.text();
@@ -82,7 +82,47 @@ export async function fetchPolygons() {
   return resp.json().catch(() => ({}));
 }
 
+export async function getImageCount(polygonId) {
+  const numericId = typeof polygonId === 'string' ? parseInt(polygonId.split('.').pop(), 10) : polygonId;
+  if (!Number.isInteger(numericId)) {
+    throw new Error(`Geçersiz id değeri: ${polygonId}`);
+  }
+  console.log("Getting image count for polygon id:", numericId);
+  const resp = await fetch(`${BASE_URL}/upload/?polygonIdCount=${numericId}`
+    , {method: 'GET'}
+  );
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(text || `HTTP ${resp.status}`);
+  }
+  const data = await resp.json().catch(() => ({}));
+  return data?.count?.result;
+}
 
+export async function uploadImage(file, polygonId) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('polygonId', polygonId);
+  const resp = await fetch(`${BASE_URL}/upload`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(text || `HTTP ${resp.status}`);
+  }
+  const data = await resp.json();
+  return data.url; 
+}
+
+export async function uploadImages(files, polygonId) {
+  const urls = [];
+  for (const file of files) {
+    const url = await uploadImage(file, polygonId);
+    urls.push(url);
+  }
+  return urls;
+}
 
 export async function deletePolygon(id) {
   const numericId = typeof id === 'string' ? parseInt(id.split('.').pop(), 10) : id;

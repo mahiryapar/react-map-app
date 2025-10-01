@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace basarsoft_react_web_api.Entities
+namespace backend.Entities
 {
     public class PolygonEntity
     {
@@ -12,6 +12,7 @@ namespace basarsoft_react_web_api.Entities
         public string? numarataj { get; set; }
         public string? aciklama { get; set; }
         public int daire_sayisi { get; set; }
+        public List<ImagesEntity>? resimler { get; set; }
         public Polygon? Geometry { get; set; }  
     }
 }

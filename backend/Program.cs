@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact",
         policy => policy
-            .WithOrigins("http://localhost:3000") // React çalýþtýðý adres
+            .WithOrigins("http://localhost:3000") 
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -37,6 +37,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IPolygonService, PolygonService>();
 builder.Services.AddScoped<IPolygonRepository, PolygonRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Register upload service for DI
+builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 
